@@ -37,6 +37,8 @@
 
         // need to trigger the update manually
         await updateWeather();
+        // reveal the widget
+        document.querySelector('.weather-widget').classList.remove('hidden');
     }
 
 

@@ -4,6 +4,9 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-end;
+
+    transition-property: opacity;
+    transition-duration: 4s;
 }
 
 
@@ -20,4 +23,9 @@
 .temp-unit {
     /* reletive to .temp-container */
     font-size: 0.5em;
+}
+
+
+.hidden {
+    opacity: 0;
 }
