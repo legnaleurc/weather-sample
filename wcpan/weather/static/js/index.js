@@ -6,6 +6,8 @@
     const displayIcon = document.querySelector('#display-icon');
     const displayTemp = document.querySelector('#display-temp');
     const displayOtherCity = document.querySelector('#display-other-city');
+    const weatherWidget = document.querySelector('.weather-widget');
+    const otherWidget = document.querySelector('.other-widget');
     let currentIcon = 0;
 
 
@@ -45,7 +47,7 @@
         // need to trigger the update manually
         await updateWeather();
         // reveal the widget
-        document.querySelector('.weather-widget').classList.remove('hidden');
+        weatherWidget.classList.remove('hidden');
     }
 
 
@@ -90,7 +92,7 @@
         displayOtherCity.textContent = data.name;
 
         // reveal the widget
-        document.querySelector('.other-widget').classList.remove('hidden');
+        otherWidget.classList.remove('hidden');
     }
 
 
