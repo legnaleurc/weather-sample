@@ -1,4 +1,5 @@
 import aiohttp
+from typing import Any, Dict, Text
 
 
 API_HOST = 'api.openweathermap.org'
@@ -6,18 +7,18 @@ API_HOST = 'api.openweathermap.org'
 
 class Weather(object):
 
-    def __init__(self, api_key):
+    def __init__(self, api_key: Text) -> None:
         self._api_key = api_key
         self._session = aiohttp.ClientSession()
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> 'Weather':
         await self._session.__aenter__()
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(self, exc_type, exc, tb) -> bool:
         await self._session.__aexit__(exc_type, exc, tb)
 
-    async def get_weather_by_city_id(self, id_):
+    async def get_weather_by_city_id(self, id_: int) -> Dict[Text, Any]:
         url = self._create_weather_url(id_)
         async with self._session.get(url) as r:
             data = await r.json()
