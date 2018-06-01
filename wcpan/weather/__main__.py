@@ -42,17 +42,21 @@ class Daemon(object):
     async def _main(self):
         app = aw.Application()
 
-        setup_static_and_view(app)
-        setup_api_path(app)
+        setup_static(app)
+        setup_template(app)
+        setup_api(app)
 
         # TODO accept config
         api_key = os.environ['WEATHER_API_KEY']
 
+        # use context managers to manage clean-up actions
         with database.Database('./db.sqlite') as db:
             async with weather.Weather(api_key) as w, \
                        ServerContext(app):
                 app['db'] = db
                 app['weather'] = w
+
+                # block here until SIGINT
                 await self._wait_for_finished()
 
         return 0
@@ -79,20 +83,24 @@ class ServerContext(object):
         await self._runner.cleanup()
 
 
-def setup_static_and_view(app):
+def setup_static(app):
     root = op.dirname(__file__)
     static_path = op.join(root, 'static')
-    template_path = op.join(root, 'template')
 
     app.router.add_static('/static/', path=static_path, name='static')
     app['static_root_url'] = '/static'
+
+
+def setup_template(app):
+    root = op.dirname(__file__)
+    template_path = op.join(root, 'template')
 
     aj.setup(app, loader=jinja2.FileSystemLoader(template_path))
 
     app.router.add_view(r'/', view.IndexHandler)
 
 
-def setup_api_path(app):
+def setup_api(app):
     app.router.add_view(r'/api/v1/country/{country_id:\d+}/city', api.CityHandler)
     app.router.add_view(r'/api/v1/weather/{city_id:\d+}', api.WeatherHandler)
 
