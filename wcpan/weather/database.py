@@ -4,6 +4,8 @@ import math
 import sqlite3
 from typing import Any, Dict, List, Text, Union
 
+from .conf import DATABASE_DSN
+
 
 SQL_CREATE_TABLES = [
     '''
@@ -208,8 +210,7 @@ def initialize() -> None:
          cities = json.load(gz)
 
     # save to database
-    dsn = './db.sqlite'
-    with Database(dsn) as db:
+    with Database(DATABASE_DSN) as db:
         for city in cities:
             db.update_city(city)
 

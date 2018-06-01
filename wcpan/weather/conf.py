@@ -1,3 +1,4 @@
+import os
 import os.path as op
 
 
@@ -10,3 +11,4 @@ def get_db_dsn():
 
 
 DATABASE_DSN = get_db_dsn()
+WEATHER_API_KEY = os.environ['WEATHER_API_KEY']

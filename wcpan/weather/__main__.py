@@ -1,5 +1,4 @@
 import asyncio
-import os
 import os.path as op
 import signal
 import sys
@@ -10,6 +9,7 @@ import jinja2
 from wcpan.logger import setup as setup_logger, EXCEPTION, INFO
 
 from . import view, database, api, weather
+from .conf import DATABASE_DSN, WEATHER_API_KEY
 
 
 class Daemon(object):
@@ -46,12 +46,9 @@ class Daemon(object):
         setup_template(app)
         setup_api(app)
 
-        # TODO accept config
-        api_key = os.environ['WEATHER_API_KEY']
-
         # use context managers to manage clean-up actions
-        with database.Database('./db.sqlite') as db:
-            async with weather.Weather(api_key) as w, \
+        with database.Database(DATABASE_DSN) as db:
+            async with weather.Weather(WEATHER_API_KEY) as w, \
                        ServerContext(app):
                 app['db'] = db
                 app['weather'] = w
