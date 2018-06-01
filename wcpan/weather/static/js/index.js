@@ -60,6 +60,9 @@
 
         displayIcon.className = getIconClassName(weather.icon);
         displayTemp.textContent = weather.temp;
+
+        // the icon may changed
+        otherWidget.classList.add('hidden');
     }
 
 
