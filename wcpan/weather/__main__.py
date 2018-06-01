@@ -103,6 +103,7 @@ def setup_template(app):
 def setup_api(app):
     app.router.add_view(r'/api/v1/country/{country_id:\d+}/city', api.CityHandler)
     app.router.add_view(r'/api/v1/weather/{city_id:\d+}', api.WeatherHandler)
+    app.router.add_view(r'/api/v1/other/{icon_id:\d+}', api.OtherHandler)
 
 
 main = Daemon(sys.argv)

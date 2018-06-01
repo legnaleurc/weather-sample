@@ -5,6 +5,8 @@
     const selectionCity = document.querySelector('#selection-city');
     const displayIcon = document.querySelector('#display-icon');
     const displayTemp = document.querySelector('#display-temp');
+    const displayOtherCity = document.querySelector('#display-other-city');
+    let currentIcon = 0;
 
 
     async function main () {
@@ -17,6 +19,11 @@
 
         // trigger manually
         await updateCities();
+
+        while (true) {
+            await wait(5000);
+            await findSameCity();
+        }
     }
 
 
@@ -47,6 +54,8 @@
         let weather = await fetch(`/api/v1/weather/${cityID}`);
         weather = await weather.json();
 
+        currentIcon = weather.icon;
+
         displayIcon.className = getIconClassName(weather.icon);
         displayTemp.textContent = weather.temp;
     }
@@ -61,6 +70,34 @@
         }
 
         return `wi wi-${icon}`;
+    }
+
+
+    async function findSameCity () {
+        let data = await fetch(`/api/v1/other/${currentIcon}`);
+        data = await data.json();
+
+        // no data
+        if (!data) {
+            return;
+        }
+
+        // user changed again
+        if (currentIcon !== data.icon) {
+            return;
+        }
+
+        displayOtherCity.textContent = data.name;
+
+        // reveal the widget
+        document.querySelector('.other-widget').classList.remove('hidden');
+    }
+
+
+    function wait (msDelay) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, msDelay);
+        });
     }
 
 

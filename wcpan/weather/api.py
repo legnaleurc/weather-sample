@@ -1,3 +1,5 @@
+import random
+
 from aiohttp import web as aw
 from wcpan.logger import DEBUG, WARNING
 
@@ -46,4 +48,22 @@ class WeatherHandler(aw.View):
             'temp_min': 26,
             'temp_max': 30,
             'icon': 300,
+        })
+
+
+class OtherHandler(aw.View):
+
+    async def get(self):
+        db = self.request.app['db']
+        icon_id = self.request.match_info.get('icon_id')
+        icon_id = int(icon_id)
+        cities = db.get_city_list_by_icon_id(icon_id)
+
+        if not cities:
+            return aw.json_response(None)
+
+        city = random.choice(cities)
+        return aw.json_response({
+            'name': city,
+            'icon': icon_id,
         })

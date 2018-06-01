@@ -155,6 +155,23 @@ class Database(object):
                    weather_data['temp_max'],
                    weather_data['icon']))
 
+    def get_city_list_by_icon_id(self, id_):
+        with ReadOnly(self._db) as query:
+            query.execute('''
+                SELECT city.name AS city, country.name AS country
+                FROM weather
+                    INNER JOIN city ON city.id=weather.city
+                    INNER JOIN country ON country.id=city.country
+                WHERE icon=?;
+            ''', (id_,))
+            rv = query.fetchall()
+
+        if not rv:
+            return []
+
+        # TODO check mtime
+        return ['{0}, {1}'.format(_['city'], _['country']) for _ in rv]
+
     def _open(self) -> sqlite3.Connection:
         db = sqlite3.connect(self._dsn)
         db.row_factory = sqlite3.Row
