@@ -1,7 +1,9 @@
 ## demo for weather app
 
 This project at least need Python 3.6.
+
 You need API key from https://openweathermap.org/.
+
 Before start you need to initialize the database.
 
 ```sh
@@ -14,3 +16,6 @@ Then you can start the server.
 ```sh
 python3 -m wcpan.weather
 ```
+
+By default it listen to localhost:8000.
+For a live demo please see https://www.wcpan.me/weather/.
