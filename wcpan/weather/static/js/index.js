@@ -15,6 +15,7 @@
             await updateWeather();
         });
 
+        // trigger manually
         await updateCities();
     }
 
