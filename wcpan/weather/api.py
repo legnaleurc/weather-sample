@@ -1,4 +1,5 @@
 from aiohttp import web as aw
+from wcpan.logger import DEBUG, WARNING
 
 
 class CityHandler(aw.View):
@@ -22,15 +23,20 @@ class WeatherHandler(aw.View):
         # first look up from cache, so we can save API quota
         weather_data = db.get_weather_by_city_id(city_id)
         if weather_data:
+            DEBUG('wcpan.weather') << 'got from cache'
+            DEBUG('wcpan.weather') << weather_data
             return aw.json_response(weather_data)
 
         # if the cache is invalid, fetch new one
         weather_data = await w.get_weather_by_city_id(city_id)
         if weather_data:
             db.update_weather(city_id, weather_data)
+            DEBUG('wcpan.weather') << 'got from openweather'
+            DEBUG('wcpan.weather') << weather_data
             return aw.json_response(weather_data)
 
         # HACK quota exceed, return a random data
+        WARNING('wcpan.weather') << 'quota exceed'
         return aw.json_response({
             'temp': 28,
             'temp_min': 26,

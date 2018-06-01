@@ -7,7 +7,7 @@ import sys
 from aiohttp import web as aw
 import aiohttp_jinja2 as aj
 import jinja2
-from wcpan.logger import setup as setup_logger, EXCEPTION
+from wcpan.logger import setup as setup_logger, EXCEPTION, INFO
 
 from . import view, database, api, weather
 
@@ -78,7 +78,7 @@ class ServerContext(object):
         site = aw.TCPSite(self._runner, host='127.0.0.1', port=8000)
         await site.start()
 
-        print('listening on 127.0.0.1:8000')
+        INFO('wcpan.weather') << 'listening on 127.0.0.1:8000'
 
         return self._runner
 
