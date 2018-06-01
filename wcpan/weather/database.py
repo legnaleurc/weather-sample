@@ -54,6 +54,9 @@ class Database(object):
         self._db = None
 
     def update_city(self, city_data):
+        '''
+        This function only used for import city data.
+        '''
         # some cities do not have name, ignore them
         if not city_data['name']:
             return
