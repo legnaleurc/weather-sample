@@ -195,14 +195,25 @@ class ReadWrite(object):
         self._cursor.close()
 
 
-def initialize(city_list_file: Text, dsn: Text) -> None:
-    with open(city_list_file, 'r') as fin, \
-         Database(dsn) as db:
-        cities = json.load(fin)
+def initialize() -> None:
+    # this function should not be used in concurrent way
+    # so just use blocking functions here
+    import gzip
+    import urllib.request as ur
+
+    # download city data from openweathermap
+    url = 'http://bulk.openweathermap.org/sample/city.list.json.gz'
+    with ur.urlopen(url) as link, \
+         gzip.GzipFile(fileobj=link) as gz:
+         cities = json.load(gz)
+
+    # save to database
+    dsn = './db.sqlite'
+    with Database(dsn) as db:
         for city in cities:
             db.update_city(city)
 
 
 if __name__ == '__main__':
     import sys
-    initialize(sys.argv[1], sys.argv[2])
+    initialize()
