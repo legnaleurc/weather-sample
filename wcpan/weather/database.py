@@ -53,7 +53,7 @@ class Database(object):
         self._db.close()
         self._db = None
 
-    def update_city(self, city_data):
+    def update_city(self, city_data: Dict[Text, Any]) -> None:
         '''
         This function only used for import city data.
         '''
@@ -76,7 +76,7 @@ class Database(object):
                 (?, ?, ?)
             ;''', (city_data['id'], city_data['name'], country_id))
 
-    def get_country_id_by_name(self, name):
+    def get_country_id_by_name(self, name: Text) -> Union[Text, None]:
         with ReadOnly(self._db) as query:
             query.execute('SELECT id FROM country WHERE name=?;', (name,))
             rv = query.fetchone()
@@ -84,12 +84,12 @@ class Database(object):
             return None
         return rv['id']
 
-    def create_country(self, name):
+    def create_country(self, name: Text) -> Text:
         with ReadWrite(self._db) as query:
             query.execute('INSERT INTO country (name) VALUES (?);', (name,))
             return query.lastrowid
 
-    def get_country_list(self):
+    def get_country_list(self) -> List[Dict[Text, Any]]:
         with ReadOnly(self._db) as query:
             query.execute('SELECT id, name FROM country;')
             rv = query.fetchall()
@@ -98,7 +98,7 @@ class Database(object):
             'name': _['name'],
         } for _ in rv]
 
-    def get_city_list_by_country_id(self, id_):
+    def get_city_list_by_country_id(self, id_: int) -> List[Dict[Text, Any]]:
         with ReadOnly(self._db) as query:
             query.execute('SELECT id, name FROM city WHERE country=?;', (id_,))
             rv = query.fetchall()
@@ -107,7 +107,7 @@ class Database(object):
             'name': _['name'],
         } for _ in rv]
 
-    def get_weather_by_city_id(self, id_):
+    def get_weather_by_city_id(self, id_: int) -> Union[Dict[Text, Any], None]:
         with ReadOnly(self._db) as query:
             query.execute('''
                 SELECT mtime, temp, temp_min, temp_max, icon
@@ -133,7 +133,9 @@ class Database(object):
             'icon':  rv['icon'],
         }
 
-    def update_weather(self, city_id, weather_data):
+    def update_weather(self,
+                       city_id: int,
+                       weather_data: Dict[Text, Any]) -> None:
         with ReadWrite(self._db) as query:
             # just drop cache, we are going to update almost all fields anyway
             query.execute('DELETE FROM weather WHERE city=?;', (city_id,))
@@ -193,7 +195,7 @@ class ReadWrite(object):
         self._cursor.close()
 
 
-def initialize(city_list_file, dsn):
+def initialize(city_list_file: Text, dsn: Text) -> None:
     with open(city_list_file, 'r') as fin, \
          Database(dsn) as db:
         cities = json.load(fin)
