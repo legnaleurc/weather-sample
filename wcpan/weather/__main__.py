@@ -77,6 +77,9 @@ class ServerContext(object):
         await self._runner.setup()
         site = aw.TCPSite(self._runner, host='127.0.0.1', port=8000)
         await site.start()
+
+        print('listening on 127.0.0.1:8000')
+
         return self._runner
 
     async def __aexit__(self, exc_type, exc, tb):
