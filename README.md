@@ -10,5 +10,5 @@ python3 wcpan/weather/database.py
 
 Then you can start the server.
 ```sh
-python -m wcpan.weather
+python3 -m wcpan.weather
 ```
