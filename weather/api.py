@@ -25,8 +25,8 @@ class WeatherHandler(aw.View):
         # first look up from cache, so we can save API quota
         weather_data = db.get_weather_by_city_id(city_id)
         if weather_data:
-            DEBUG('wcpan.weather') << 'got from cache'
-            DEBUG('wcpan.weather') << weather_data
+            DEBUG('weather') << 'got from cache'
+            DEBUG('weather') << weather_data
 
             return aw.json_response(weather_data)
 
@@ -35,13 +35,13 @@ class WeatherHandler(aw.View):
         if weather_data:
             db.update_weather(city_id, weather_data)
 
-            DEBUG('wcpan.weather') << 'got from openweather'
-            DEBUG('wcpan.weather') << weather_data
+            DEBUG('weather') << 'got from openweather'
+            DEBUG('weather') << weather_data
 
             return aw.json_response(weather_data)
 
         # HACK quota exceed, return a random data
-        WARNING('wcpan.weather') << 'quota exceed'
+        WARNING('weather') << 'quota exceed'
 
         return aw.json_response({
             'temp': 28,

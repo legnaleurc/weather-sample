@@ -9,12 +9,12 @@ Before start you need to initialize the database.
 ```sh
 pip install -r requirements.txt
 export WEATHER_API_KEY='your_api_key'
-python3 -m wcpan.weather.database
+python3 -m weather.database
 ```
 
 Then you can start the server.
 ```sh
-python3 -m wcpan.weather
+python3 -m weather
 ```
 
 By default it listen to localhost:8000.

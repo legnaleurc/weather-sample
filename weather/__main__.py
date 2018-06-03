@@ -17,7 +17,7 @@ class Daemon(object):
     def __init__(self, args):
         setup_logger((
             'aiohttp',
-            'wcpan.weather',
+            'weather',
         ))
 
         self._loop = asyncio.get_event_loop()
@@ -34,7 +34,7 @@ class Daemon(object):
         try:
             return await self._main()
         except Exception as e:
-            EXCEPTION('wcpan.weather', e)
+            EXCEPTION('weather', e)
         finally:
             self._loop.stop()
         return 1
@@ -75,7 +75,7 @@ class ServerContext(object):
         site = aw.TCPSite(self._runner, host='127.0.0.1', port=8000)
         await site.start()
 
-        INFO('wcpan.weather') << 'listening on 127.0.0.1:8000'
+        INFO('weather') << 'listening on 127.0.0.1:8000'
 
         return self._runner
 
