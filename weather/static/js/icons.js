@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  window.__WeatherIcon__ = {
+  const Weather = window.Weather || {};
+
+  const Icon = {
     "200": {
       "label": "thunderstorm with light rain",
       "icon": "storm-showers"
@@ -368,5 +370,10 @@
       "icon": "cloudy-gusts"
     }
   };
+
+
+  window.Weather = Object.assign(Weather, {
+    Icon,
+  });
 
 })();

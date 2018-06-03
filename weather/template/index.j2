@@ -32,17 +32,17 @@
 
         <div class="weather-widget hidden">
             <div class="icon-container">
-                <i id="display-icon"></i>
+                <i class="display-icon"></i>
             </div>
             <div class="temp-container">
-                <span id="display-temp"></span><span class="temp-unit">℃</span>
+                <span class="display-temp"></span><span class="temp-unit">℃</span>
             </div>
         </div>
 
         <div class="other-widget hidden">
             <div class="other-widget-inner">
                 <div class="other-widget-inner-head">Do you know ...</div>
-                <div class="other-widget-inner-body" id="display-other-city"></div>
+                <div class="other-widget-inner-body display-other-city"></div>
                 <div class="other-widget-inner-tail">also share the same weather? At least you are not alone!</div>
             </div>
         </div>
@@ -50,6 +50,9 @@
     </div>
 
     <script src="{{ static('js/icons.js') }}"></script>
+    <script src="{{ static('js/url.js') }}"></script>
+    <script src="{{ static('js/view.js') }}"></script>
     <script src="{{ static('js/index.js') }}"></script>
+
 </body>
 </html>
