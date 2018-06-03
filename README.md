@@ -1,6 +1,6 @@
 ## demo for weather app
 
-This project at least need Python 3.6.
+This project at least need Python 3.6, and Chrome 64 or Firefox 59.
 
 You need API key from https://openweathermap.org/.
 
